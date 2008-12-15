@@ -8,6 +8,7 @@ module ValidatesUrlFormatOf
         #{IPv4_PART}(\.#{IPv4_PART}){3} )            # or IPv4
     (:\d{1,5})?                                      # optional port
     ([/?]\S*)?                                       # optional /whatever or ?whatever
+    ([#](\S*)?)?                                     # hash anchor
     \Z
   }iux
 

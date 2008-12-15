@@ -38,6 +38,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     [
       'http://example.com',
       'http://example.com/',
+      'http://example.com#',
       'http://www.example.com/',
       'http://sub.domain.example.com/',
       'http://bbc.co.uk',
