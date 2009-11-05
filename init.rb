@@ -29,13 +29,7 @@ module ValidatesUrlFormatOf
     options = { :allow_nil => false,
                 :allow_blank => false }                
     options = options.merge(attr_names.pop) if attr_names.last.is_a?(Hash)
-    
-    if !options[:require_protocol].nil? && options[:require_protocol] == false
-      options[:with] = REGEXP_OPTIONAL_PROTOCOL
-    else
-      options[:with] = REGEXP
-    end
-
+    options[:with] = !options[:require_protocol].nil? && options[:require_protocol] == false ? REGEXP_OPTIONAL_PROTOCOL : REGEXP
 
     attr_names.each do |attr_name|
       message = attr_name.to_s.match(/(_|\b)URL(_|\b)/i) ? DEFAULT_MESSAGE_URL : DEFAULT_MESSAGE
