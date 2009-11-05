@@ -9,7 +9,7 @@ After installing the plugin, it's used like
     class User < ActiveRecord::Base
       validates_url_format_of :url,
                               :allow_nil => true,
-                              :message => 'is completely unacceptable'
+                              :message => 'is completely unacceptable',
                               :require_protocol => true
     end
     
