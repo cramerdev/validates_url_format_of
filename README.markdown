@@ -10,9 +10,12 @@ After installing the plugin, it's used like
       validates_url_format_of :url,
                               :allow_nil => true,
                               :message => 'is completely unacceptable'
+                              :require_protocol => true
     end
     
-Takes the same arguments as [`validates_format_of`](http://api.rubyonrails.org/classes/ActiveRecord/Validations/ClassMethods.html#M001052) except for the `:with` regexp.
+Takes the same arguments as [`validates_format_of`](http://api.rubyonrails.org/classes/ActiveRecord/Validations/ClassMethods.html#M001052) except for the removal of the `:with` regexp (you don't need it, since the plugin handles the regexp for you) and the addition of the `:require_protocol` argument.
+
+The `:require_protocol` argument, if true, requires the presence of `http://` or `https://` at the beginning of the URL to be checked.  If false, this check is skipped. (The default is `true`.)
 
 The default `:message` is different depending on whether the attribute name contains the word "URL". So you will get "Homepage URL does not appear to be valid" but "Homepage does not appear to be a valid URL" without having to customize the `:message`.
 
@@ -22,11 +25,10 @@ Please note that the regexp used to validate URLs is not perfect, but hopefully 
 
 Does not handle IPv6.
 
-By design, the plugin does not allow e.g. "http://localhost" or "http://my.localurl", which are valid URLs but not suitable in most web apps. It also requires a "http://" or "https://" prefix, so just "example.com" is not valid. Fix that in the setter.
+By design, the plugin does not allow e.g. "http://localhost" or "http://my.localurl", which are valid URLs but not suitable in most web apps. 
   
 ## Credits and license
-
-By [Henrik Nyh](http://henrik.nyh.se/) under the MIT license:
+Code by [Henrik Nyh](http://henrik.nyh.se/) under the MIT license:
 
 >  Copyright (c) 2008 Henrik Nyh
 >

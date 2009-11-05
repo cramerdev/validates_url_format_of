@@ -10,15 +10,32 @@ module ValidatesUrlFormatOf
     ([/?]\S*)?                                       # optional /whatever or ?whatever
     \Z
   }iux
+  REGEXP_OPTIONAL_PROTOCOL = %r{
+    \A
+    (https?://)?                                     # http:// or https://
+    ([^\s:@]+:[^\s:@]*@)?                            # optional username:pw@
+    ( (xn--)?[^\W_]+([-.][^\W_]+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
+        #{IPv4_PART}(\.#{IPv4_PART}){3} )            # or IPv4
+    (:\d{1,5})?                                      # optional port
+    ([/?]\S*)?                                       # optional /whatever or ?whatever
+    \Z
+  }iux
+
 
   DEFAULT_MESSAGE     = 'does not appear to be a valid URL'
   DEFAULT_MESSAGE_URL = 'does not appear to be valid'
   
   def validates_url_format_of(*attr_names)
     options = { :allow_nil => false,
-                :allow_blank => false,
-                :with => REGEXP }                
+                :allow_blank => false }                
     options = options.merge(attr_names.pop) if attr_names.last.is_a?(Hash)
+    
+    if !options[:require_protocol].nil? && options[:require_protocol] == false
+      options[:with] = REGEXP_OPTIONAL_PROTOCOL
+    else
+      options[:with] = REGEXP
+    end
+
 
     attr_names.each do |attr_name|
       message = attr_name.to_s.match(/(_|\b)URL(_|\b)/i) ? DEFAULT_MESSAGE_URL : DEFAULT_MESSAGE
