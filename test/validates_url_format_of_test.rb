@@ -30,6 +30,13 @@ class Model
   
   attr_accessor :custom_url
   validates_url_format_of :custom_url, :message => 'custom message'
+  
+  attr_accessor :protocol_test_false_url
+  validates_url_format_of :protocol_test_false_url, :message => 'custom message', :require_protocol => false
+
+  attr_accessor :protocol_test_true_url
+  validates_url_format_of :protocol_test_true_url, :message => 'custom message', :require_protocol => true
+
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
@@ -106,5 +113,36 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     @model.save
     assert_equal 'custom message', @model.errors.on(:custom_url)
   end
+  
+  def test_should_not_allow_urls_without_protocol_by_default
+    [
+      "www.example.com", "subdomain.primarydomain.co.uk"
+    ].each do |url|
+      @model.homepage = url
+      @model.save
+      assert_equal @model.errors.on(:homepage), "does not appear to be a valid URL"
+    end
+  end
+  
+  def test_should_not_allow_urls_without_protocol_if_flag_is_true
+    [
+      "www.example.com", "subdomain.primarydomain.co.uk"
+    ].each do |url|
+      @model.protocol_test_true_url = url
+      @model.save
+      assert_equal @model.errors.on(:protocol_test_true_url), "custom message"
+    end
+  end
+  
+  def test_should_allow_urls_without_protocol_if_flag_is_false
+    [
+      "www.example.com", "subdomain.primarydomain.co.uk"
+    ].each do |url|
+      @model.protocol_test_false_url = url
+      @model.save
+      assert_equal @model.errors.on(:protocol_test_false_url), nil
+    end
+  end
+
   
 end
