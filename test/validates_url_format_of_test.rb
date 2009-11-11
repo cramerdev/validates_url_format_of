@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 require 'rubygems'
 require 'test/unit'
 require 'active_record'
@@ -65,6 +66,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://1.0.255.249',
       'http://1.2.3.4:80',
       'HttP://example.com',
+     "http://www.usairways.com/awa/content/dividendmiles/earnmiles/newspapers.aspx#The Charlotte Observer",
       'https://example.com',
       'http://räksmörgås.nu',  # IDN
       'http://xn--rksmrgs-5wao1o.nu',  # Punycode
